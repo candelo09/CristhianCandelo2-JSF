@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Productos</title>
+            </f:facet>
+        </h:head>
+
+        <style>
+            .titulo {
+                color:Red;
+                text-align: center;
+                font-size: 35px;
+            }
+
+
+        </style>
+
+        <h:body>
+
+            <p:layout fullPage="true">  
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    Aplicaciones MultiNivel  <h2 class="titulo">TABLA PRODUCTOS</h2>
+                </p:layoutUnit>
+
+
+
+
+                <p:layoutUnit position="center"> 
+                    <h:form id="formularioProductos">
+                        <p:messages id="mensaje" showDetail="true"/>
+                        <p:panelGrid columns="6" id="panelC">
+
+                            <div>
+                            <p:inputText id="txtNombre" placeholder="Nombre Producto" 
+                                         binding="#{productosVista.txtNombreProducto}"/>
+
+                            <p:inputText id="txtValorC" placeholder="Valor Compra" 
+                                         binding="#{productosVista.txtValorCompra}"/>
+
+
+                            <p:inputText id="txtValorV" placeholder="Valor Venta" 
+                                         binding="#{productosVista.txtValorVenta}"/>
+
+
+                            <p:inputText id="txtCSto" placeholder="Cantidad Stock" 
+                                         binding="#{productosVista.txtCantidadStock}"/>
+
+
+                            <p:inputText id="txtCAct" placeholder="Cantidad Actual" 
+                                         binding="#{productosVista.txtCantidadActual}"/>
+                            </div>
+
+                            <div>
+                                <p:dataTable id="cate" var="c" value="#{categoriasVista.listaCategorias}" 
+                                             scrollable="true" scrollHeight="150"
+                                             selection="#{productosVista.selectCategorias}"
+                                             selectionMode="single"
+                                             rowKey="#{c.idCategoria}"
+                                             widgetVar="categoriasTable">
+
+                                    <p:ajax event="rowSelect" listener="#{productosVista.seleccionarCategoria(ca)}"
+                                            update=":formularioProductos:panelC" />
+
+
+                                    <p:column filterBy="#{c.tipoCategoria}" headerText="Elegir Categoria" 
+                                              filterMatchMode="contains">
+                                        <h:outputText value="#{c.tipoCategoria}"/>
+                                    </p:column>
+
+                                </p:dataTable> 
+
+
+                                <p:dataTable id="prov" var="pro" value="#{proveedoresVista.listaProveedores}" 
+                                             scrollable="true" scrollHeight="150"
+                                             selection="#{productosVista.selectProveedores}"
+                                             selectionMode="single"
+                                             rowKey="#{pro.idProveedores}"
+                                             widgetVar="proveedoresTable">
+
+                                    <p:ajax event="rowSelect" listener="#{productosVista.seleccionarProveedor(pr)}"
+                                            update=":formularioProductos:panelC" />
+
+
+                                    <p:column filterBy="#{pro.nombre}" headerText="Elegir Proveedor" 
+                                              filterMatchMode="contains">
+                                        <h:outputText value="#{pro.nombre}"/>
+                                    </p:column>
+
+                                </p:dataTable> 
+
+                            </div>
+
+
+
+
+                        </p:panelGrid>
+
+                        <p:commandButton value="Registrar Producto"
+                                         actionListener="#{productosVista.registrarProductos()}"
+                                         update="formularioProductos"/>
+
+                        <p:commandButton value="Modificar Producto"
+                                         actionListener="#{productosVista.modificarProductos()}"
+                                         update="formularioProductos"/>
+
+                        <p:commandButton value="Eliminar Producto" action="#{productosVista.eliminarProductos()}" 
+                                         update="formularioProductos">
+                            <p:confirm header="Confirmación" message="Está Seguro" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog> 
+
+
+                        <p:dataTable var="p" value="#{productosVista.listaProductos}" rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     selection="#{productosVista.selectProductos}"
+                                     selectionMode="single"
+                                     rowKey="#{p.idProductos}">
+                            <p:ajax event="rowSelect" listener="#{productosVista.seleccionarProducto}"
+                                    update=":formularioProductos:panelC" />
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{p.nombreProducto}" />
+                            </p:column>
+
+                            <p:column headerText="Valor de Compra">
+                                <h:outputText value="#{p.valorCompra}" />
+                            </p:column>
+
+                            <p:column headerText="Valor de Venta">
+                                <h:outputText value="#{p.valorVenta}" />
+                            </p:column>
+
+                            <p:column headerText="Cantidad Stock">
+                                <h:outputText value="#{p.cantidadStock}" />
+                            </p:column>
+
+                            <p:column headerText="Cantidad Actual">
+                                <h:outputText value="#{p.cantidadActual}" />
+                            </p:column> 
+
+                            <p:column headerText="Categoria">
+                                <h:outputText value="#{p.idCategorias.tipoCategoria}" />
+                            </p:column> 
+
+                            <p:column headerText="Proveedor">
+                                <h:outputText value="#{p.idProveedor.nombre}" />
+                            </p:column> 
+
+                            <f:facet name="paginatorTopLeft">
+                                <p:commandButton type="button" icon="pi pi-refresh" />
+                            </f:facet>
+
+                            <f:facet name="paginatorBottomRight">
+                                <p:commandButton type="button" icon="pi pi-cloud-upload" />
+                            </f:facet>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Promociones</title>
+            </f:facet>
+        </h:head>
+
+        <style>
+            .titulo {
+                color:Red;
+                text-align: center;
+                font-size: 35px;
+            }
+
+
+        </style>
+
+        <h:body>
+
+            <p:layout fullPage="true">  
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    Aplicaciones MultiNivel  <h2 class="titulo">TABLA PROMOCIONES</h2>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Cristhian Candelo
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Volver" url="principal.xhtml" />
+
+                            </p:submenu>
+
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center"> 
+                    <h:form id="formularioPromociones">
+                        <p:messages id="mensaje" showDetail="true"/>
+                        <p:panelGrid columns="8" id="panelC">
+
+
+                            <h:outputText value="Nombre Productos:"/>
+
+                            <p:dataTable id="cate" var="p" value="#{productosVista.listaProductos}" 
+                                         scrollable="true" scrollHeight="150"
+                                         selection="#{promocionesVista.selectProductos}"
+                                         selectionMode="single"
+                                         rowKey="#{p.idProductos}"
+                                         widgetVar="categoriasTable">
+
+                                <p:ajax event="rowSelect" listener="#{promocionesVista.seleccionarProducto(pr)}"
+                                        update=":formularioPromociones:panelC" />
+
+
+                                <p:column filterBy="#{p.nombreProducto}" headerText="Elegir Categoria" 
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{p.nombreProducto}"/>
+                                </p:column>
+
+                            </p:dataTable> 
+
+
+
+                            <h:outputText value="Descuento:"/>
+                            <p:inputText id="txtNombre" binding="#{promocionesVista.txtDescuento}"/>
+
+                            <h:outputText value="Estado"/>   
+                            <p:selectOneMenu id="cmbEstado" binding="#{promocionesVista.cmbEstado}">
+                                <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO"/>
+                                <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO"/>
+
+                            </p:selectOneMenu>
+
+
+                        </p:panelGrid>
+
+                        <p:commandButton value="Registrar Promoción"
+                                         actionListener="#{promocionesVista.registrarPromociones()}"
+                                         update="formularioPromociones"/>
+
+                        <p:commandButton value="Modificar Promoción"
+                                         actionListener="#{promocionesVista.modificarPromociones()}"
+                                         update="formularioPromociones"/>
+
+                        <p:commandButton value="Eliminar Promoción" action="#{promocionesVista.eliminarPromocion()}" 
+                                         update="formularioPromociones">
+                            <p:confirm header="Confirmación" message="Está Seguro" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog> 
+
+
+                        <p:dataTable var="promo" value="#{promocionesVista.listaPromociones}" rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     selection="#{promocionesVista.selectPromociones}"
+                                     selectionMode="single"
+                                     rowKey="#{promo.idPromociones}">
+                            <p:ajax event="rowSelect" listener="#{promocionesVista.seleccionarPromociones}"
+                                    update=":formularioPromociones:panelC" />
+
+
+                            <p:column headerText="Nombre Producto">
+                                <h:outputText value="#{promo.idProductos.nombreProducto}" />
+                            </p:column>
+
+                            <p:column headerText="Descuento">
+                                <h:outputText value="#{promo.desto}" />
+                            </p:column>
+
+                            <p:column headerText="Estado Promoción">
+                                <h:outputText value="#{promo.estado}" />
+                            </p:column>
+
+                            <f:facet name="paginatorTopLeft">
+                                <p:commandButton type="button" icon="pi pi-refresh" />
+                            </f:facet>
+
+                            <f:facet name="paginatorBottomRight">
+                                <p:commandButton type="button" icon="pi pi-cloud-upload" />
+                            </f:facet>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

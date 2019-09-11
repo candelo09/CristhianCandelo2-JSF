@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Ingreso</title>
+            </f:facet>
+        </h:head>
+        <style>
+
+            body{
+                background: -webkit-linear-gradient(left, rgba(59,103,120,1) 0%, rgba(59,103,120,1) 1%, rgba(41,184,229,1) 100%);
+            }
+            .titulo {
+                color:Red;
+                text-align: center;
+                font-size: 35px;
+            }
+
+            .parametros {
+
+                text-align: center;
+                padding-top:  80px;
+            }
+
+            .parametros .labelU{ 
+                color : #091354;
+                font-size: 200%;
+                font-family: sans-serif;
+                font-weight: bold;
+            }
+
+            .parametros .labelP{ 
+                color : #091354;
+                font-size: 200%;
+                font-family: sans-serif;
+                font-weight: bold;
+            }
+
+            .ui-widget {
+                font-family: Arial,sans-serif;
+                font-size: 1.6em;
+            }
+
+            .ui-inputfield {
+                margin: 0;
+                outline: medium none;
+                padding: 4px;
+                font-weight: normal;
+                border-radius: 15px;
+            }
+
+        </style>
+
+        <h:body>
+
+
+
+
+
+
+            <h:form id="formularioUsuario">
+                <p:growl id="mensaje" showDetail="true"/>
+
+                <div class="parametros">
+
+                    <p:outputLabel class="labelU" value="USUARIO"/><br></br> <br></br>
+                    <p:inputText id="txtUsuario"
+                                 binding="#{colaboradorVista.usuario}"
+                                 placeholder="Ingresar usuario"
+                                 required="true" requiredMessage="El usuario es obligatorio"/><br></br>
+                </div>
+
+                <div class="parametros">
+                    <h:outputLabel class="labelP" value="CONTRASEÑA" /><br></br> <br></br>
+                    <p:password id="txtContraseña" binding="#{colaboradorVista.clave}" 
+                                placeholder="Ingresar contraseña"
+                                required="true" requiredMessage="La contraseña es obligatoria" /><br></br>
+
+                </div>
+
+                <div class="parametros">
+                    <p:commandButton value="Ingresar"
+                                     action="#{colaboradorVista.ingresarUser()}"
+                                     update="formularioUsuario"/>
+
+                </div>
+
+            </h:form>
+
+
+
+        </h:body>
+
+    </f:view>
+</html>
+

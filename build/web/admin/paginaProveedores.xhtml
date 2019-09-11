@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+       xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Proveedores</title>
+            </f:facet>
+        </h:head>
+
+        <style type="text/css">
+            .titulo {
+                color:Red;
+                text-align: center;
+                font-size: 35px;
+            }
+
+
+            .column {
+                font-weight: bold;
+            }
+        </style>
+
+
+        <h:body>
+
+            <p:layout fullPage="true">  
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    Aplicaciones MultiNivel  <h2 class="titulo">PROVEEDORES</h2>
+                </p:layoutUnit>
+
+
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Volver" url="principal.xhtml" />
+
+                            </p:submenu>
+
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center"> 
+                    <h:form id="formularioProveedores">
+                        <p:growl id="mensaje" showDetail="true"/>
+                        <h:panelGrid columns="6" columnClasses="column" cellpadding="5" id="panelC">
+
+                            <h:outputLabel value="Identificación: "/>
+                            <p:inputText id="txtId" binding="#{proveedoresVista.txtIdentificacion}"/>
+
+                            <h:outputText value="Nombre: "/>
+                            <p:inputText id="txtNombre" binding="#{proveedoresVista.txtNombre}"/>
+
+                            <h:outputText value="Correo: "/>
+                            <p:inputText id="txtEmail" binding="#{proveedoresVista.txtemail}"/>
+
+                            <h:outputText value="Telefono: "/>
+                            <p:inputText id="txtTel" binding="#{proveedoresVista.txtTelefono}"/>
+
+                            <h:outputText value="Dirección: "/>
+                            <p:inputText id="txtDir" binding="#{proveedoresVista.txtdireccion}"/>
+
+                            <h:outputText value="Ciudad: "/>
+                            <p:inputText id="txtCiu" binding="#{proveedoresVista.txtCiudad}"/>
+
+
+                        </h:panelGrid>
+                        <p:spacer />
+
+
+                        <p:commandButton value="Registrar Proveedor"
+                                         actionListener="#{proveedoresVista.registrarProveedor()}"
+                                         update="formularioProveedores"
+                                         />
+
+                        <p:commandButton value="Modificar Proveedor"
+                                         actionListener="#{proveedoresVista.modificarProveedor()}"
+                                         update="formularioProveedores"/>
+
+                        <p:commandButton value="Eliminar Proveedor" action="#{proveedoresVista.eliminarProveedor()}" 
+                                         update="formularioProveedores">
+                            <p:confirm header="Confirmación" message="Está Seguro" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog> 
+
+
+                        <p:separator />
+
+                        <p:dataTable var="pr" value="#{proveedoresVista.listaProveedores}" rows="3"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     selection="#{proveedoresVista.selectProveedor}"
+                                     selectionMode="single"
+                                     rowKey="#{pr.idProveedores}">
+                            <p:ajax event="rowSelect" listener="#{proveedoresVista.seleccionarProveedor}"
+                                    update=":formularioProveedores:panelC" />
+
+
+                            <p:column headerText="Identificación">
+                                <h:outputText value="#{pr.identificacion}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{pr.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Correo">
+                                <h:outputText value="#{pr.email}" />
+                            </p:column>
+
+                            <p:column headerText="Telefono">
+                                <h:outputText value="#{pr.telefono}" />
+                            </p:column>
+
+                            <p:column headerText="Direccion">
+                                <h:outputText value="#{pr.direccion}" />
+                            </p:column>
+
+                            <p:column headerText="Ciudad">
+                                <h:outputText value="#{pr.ciudad}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+
+    <script type="text/javascript">
+        function limpiarForm()
+        {
+            document.getElementById("formularioColaborador").reset();
+        }
+    </script>
+</html>
