@@ -6,14 +6,19 @@
 package vista;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Default;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import logica.ColaboradorLogicaLocal;
 import modelo.Colaborador;
 import org.primefaces.component.commandbutton.CommandButton;
@@ -26,8 +31,10 @@ import org.primefaces.event.SelectEvent;
  * @author Laura
  */
 @Named(value = "colaboradorVista")
-@RequestScoped
-public class ColaboradorVista {
+@SessionScoped
+@Default
+@Any
+public class ColaboradorVista implements Serializable{
 
     @EJB
     private ColaboradorLogicaLocal colaboradorLogica;
@@ -50,6 +57,7 @@ public class ColaboradorVista {
     private CommandButton btnModificar;
     private CommandButton btnEliminar;
     private Colaborador selectColaborador;
+    private Colaborador usuarioLogueado;
 
     public List<Colaborador> getListaColaboradores() {
 
@@ -312,25 +320,24 @@ public class ColaboradorVista {
 
             nuevoUsuario.setClaveUser(clave.getValue().toString());
 
-            Colaborador usuarioLogueado = colaboradorLogica.ingresar(nuevoUsuario);
+            usuarioLogueado = colaboradorLogica.ingresar(nuevoUsuario);
 
             // Guardo al usuario en la sesión.
             FacesContext.getCurrentInstance().getExternalContext()
                     .getSessionMap().put("usuario", usuarioLogueado);
-
+            
+            
             if (usuarioLogueado.getCargo().equals("administrador")) {
                 //Redirecciono a la página.
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("admin/principal.xhtml");
-                
-               txtUserLogueado = usuarioLogueado.getNombre() + usuarioLogueado.getApellido();
-
-                usuario.setValue(txtUserLogueado);
-                
-                System.out.println("Usuario"+ usuario.getValue().toString());
+            
             }
-
+               
+               txtUserLogueado = usuarioLogueado.getNombre() +" "+ usuarioLogueado.getApellido();        
+      
             if (usuarioLogueado.getCargo().equals("colaborador")) {
+                
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("colaborador/principal.xhtml");
                 System.out.println("Nombre Usuario " +usuarioLogueado.getNombre() + usuarioLogueado.getApellido());

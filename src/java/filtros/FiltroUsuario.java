@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import modelo.Colaborador;
 
 
+
 public class FiltroUsuario implements Filter {
     
     private FilterConfig configuration;
@@ -29,9 +30,10 @@ public class FiltroUsuario implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         Colaborador u = (Colaborador) ((HttpServletRequest) request).getSession().getAttribute("usuario");
-//        System.out.println("valida la sesion "+u.getApellido());
+        
         if (u != null) {
              chain.doFilter(request, response);          
+             System.out.println("valida la sesion "+u.getApellido());
         } else {
             ((HttpServletResponse) response).sendRedirect("../SesionInvalida.xhtml");
         }

@@ -28,8 +28,6 @@ public class VentasLogica implements VentasLogicaLocal {
             throw new Exception("La venta no existe");
         }
 
-       
-
         ventasDao.create(ve);
     }
 
@@ -40,6 +38,15 @@ public class VentasLogica implements VentasLogicaLocal {
 
     @Override
     public void modificarVenta(Ventas ve) throws Exception {
+        if (ve == null) {
+            throw new Exception("La venta no ha sido creada");
+        }
+        
+        Ventas objVentas = ventasDao.traerCodigo();
+        
+        if(objVentas == null){
+            throw  new Exception("La venta no ha sido creada");
+        }
         ventasDao.edit(ve);
     }
 
@@ -61,15 +68,14 @@ public class VentasLogica implements VentasLogicaLocal {
 
         Ventas objVentas = ventasDao.traerCodigo();
 
-
         return objVentas;
     }
 
     @Override
     public void registrarVentas() throws Exception {
-         Ventas objVentas = ventasDao.traerCodigo();
-         
-         ventasDao.create(objVentas);
+        Ventas objVentas = ventasDao.traerCodigo();
+
+        ventasDao.create(objVentas);
     }
 
 }
