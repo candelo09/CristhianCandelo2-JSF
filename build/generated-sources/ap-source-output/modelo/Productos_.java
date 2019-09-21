@@ -6,11 +6,11 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import modelo.Categoria;
 import modelo.Combos;
-import modelo.Factura;
+import modelo.DetalleFactura;
 import modelo.Promociones;
 import modelo.Proveedores;
 
-@Generated(value="EclipseLink-2.6.1.v20150605-rNA", date="2019-09-04T08:37:59")
+@Generated(value="EclipseLink-2.6.1.v20150605-rNA", date="2019-09-20T19:11:58")
 @StaticMetamodel(Productos.class)
 public class Productos_ { 
 
@@ -21,9 +21,9 @@ public class Productos_ {
     public static volatile SingularAttribute<Productos, Double> valorVenta;
     public static volatile SingularAttribute<Productos, Proveedores> idProveedor;
     public static volatile SingularAttribute<Productos, Double> valorCompra;
-    public static volatile ListAttribute<Productos, Factura> facturaList;
     public static volatile ListAttribute<Productos, Promociones> promocionesList;
     public static volatile ListAttribute<Productos, Combos> combosList;
+    public static volatile ListAttribute<Productos, DetalleFactura> detalleFacturaList;
     public static volatile SingularAttribute<Productos, String> nombreProducto;
 
 }

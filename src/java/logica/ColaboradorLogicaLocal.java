@@ -24,4 +24,6 @@ public interface ColaboradorLogicaLocal {
     public void eliminarColaborador(Colaborador co) throws Exception;
     
     public Colaborador ingresar(Colaborador colaborador) throws Exception;
+    
+    public Colaborador consultaxIden(Integer idUsuario);
 }

@@ -7,7 +7,9 @@ package persistencia;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import modelo.Productos;
 
 /**
@@ -28,5 +30,18 @@ public class ProductosFacade extends AbstractFacade<Productos> implements Produc
     public ProductosFacade() {
         super(Productos.class);
     }
+
+    @Override
+    public Productos consultarId(Integer codigoProducto) {
+        String consulta = " SELECT p FROM Productos p WHERE  p.idProductos="+codigoProducto;
+        
+        try{
+        Query query = em.createQuery(consulta);   
+        return (Productos) query.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
+        }
+    }
+
     
 }

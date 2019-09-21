@@ -23,15 +23,17 @@ public interface ColaboradorFacadeLocal {
     void remove(Colaborador colaborador);
 
     Colaborador find(Object id);
-    
-    Colaborador findxIdentificacion(Long Identificacion);
-    
-    Colaborador findxNombUser(String nombre);
+
+    Colaborador findxIdentificacion(Long identificacion);
+
+    Colaborador findxNombUser(String nombreUser);
+
+    Colaborador findxIdColaborador(Integer id);
 
     List<Colaborador> findAll();
 
     List<Colaborador> findRange(int[] range);
 
     int count();
-    
+
 }

@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -41,10 +40,9 @@ public class Promociones implements Serializable {
     @Basic(optional = false)
     @Column(name = "idPromociones")
     private Integer idPromociones;
-    @Basic(optional = false)
-    @NotNull
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "desto")
-    private double desto;
+    private Double desto;
     @Size(max = 10)
     @Column(name = "estado")
     private String estado;
@@ -59,11 +57,6 @@ public class Promociones implements Serializable {
         this.idPromociones = idPromociones;
     }
 
-    public Promociones(Integer idPromociones, double desto) {
-        this.idPromociones = idPromociones;
-        this.desto = desto;
-    }
-
     public Integer getIdPromociones() {
         return idPromociones;
     }
@@ -72,11 +65,11 @@ public class Promociones implements Serializable {
         this.idPromociones = idPromociones;
     }
 
-    public double getDesto() {
+    public Double getDesto() {
         return desto;
     }
 
-    public void setDesto(double desto) {
+    public void setDesto(Double desto) {
         this.desto = desto;
     }
 

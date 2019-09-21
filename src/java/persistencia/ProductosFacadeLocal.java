@@ -23,7 +23,9 @@ public interface ProductosFacadeLocal {
     void remove(Productos productos);
 
     Productos find(Object id);
-
+    
+    Productos consultarId(Integer codigoProducto);
+    
     List<Productos> findAll();
 
     List<Productos> findRange(int[] range);

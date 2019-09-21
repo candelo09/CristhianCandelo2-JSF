@@ -17,14 +17,26 @@ import persistencia.VentasFacadeLocal;
  */
 @Stateless
 public class VentasLogica implements VentasLogicaLocal {
-    
+
     @EJB
-    
+
     public VentasFacadeLocal ventasDao;
 
     @Override
     public void registrarVenta(Ventas ve) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ve == null) {
+            throw new Exception("La venta no existe");
+        }
+
+//        Ventas objVentas = ventasDao.findxCodigo(ve.getIdVentas());
+//        if(objVentas != null){
+//            throw  new Exception("La venta ya se encuentra registrada");
+//        }
+        if (ve.getFecha() == null) {
+            throw new Exception("Debe ingresar la fecha");
+        }
+
+        ventasDao.create(ve);
     }
 
     @Override
@@ -42,6 +54,21 @@ public class VentasLogica implements VentasLogicaLocal {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public Ventas traerVenta(Integer numVenta) {
+
+        return ventasDao.findxCodigo(numVenta);
+    }
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @Override
+    public Ventas traerCodVenta() {
+
+        Ventas objVentas = ventasDao.traerCodigo();
+
+
+        return objVentas;
+    }
+
 }

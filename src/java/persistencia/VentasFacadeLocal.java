@@ -24,10 +24,14 @@ public interface VentasFacadeLocal {
 
     Ventas find(Object id);
 
+    Ventas findxCodigo(Integer codigo);
+
+    Ventas traerCodigo();
+
     List<Ventas> findAll();
 
     List<Ventas> findRange(int[] range);
 
     int count();
-    
+
 }

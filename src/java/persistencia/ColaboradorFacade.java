@@ -32,31 +32,39 @@ public class ColaboradorFacade extends AbstractFacade<Colaborador> implements Co
     }
 
     @Override
-    public Colaborador findxNombUser(String nombre) {
-            String consulta = " SELECT c FROM Colaborador c WHERE  c.nombreuser='"+nombre+"'";
-        
-        try{
+    public Colaborador findxIdentificacion(Long identificacion) {
+        String consulta = " SELECT c FROM Colaborador c WHERE  c.identificacion=" + identificacion;
+
+        try {
             Query query = em.createQuery(consulta);
-            return (Colaborador) query.getSingleResult();  
-        }catch(NoResultException nre){
+            return (Colaborador) query.getSingleResult();
+        } catch (NoResultException nre) {
             return null;
-            
         }
     }
 
     @Override
-    public Colaborador findxIdentificacion(Long Identificacion) {
-               String consulta = " SELECT c FROM Colaborador c WHERE  c.identificacion="+Identificacion;
-        
-        try{
+    public Colaborador findxNombUser(String nombreUser) {
+        String consulta = " SELECT c FROM Colaborador c WHERE  c.nombreuser='" + nombreUser + "'";
+
+        try {
             Query query = em.createQuery(consulta);
-            return (Colaborador) query.getSingleResult();  
-        }catch(NoResultException nre){
+            return (Colaborador) query.getSingleResult();
+        } catch (NoResultException nre) {
             return null;
-            
         }
     }
-    
-    
-    
+
+    @Override
+    public Colaborador findxIdColaborador(Integer id) {
+        String consulta = " SELECT c FROM Colaborador c WHERE  c.idUsuario=" + id;
+
+        try {
+            Query query = em.createQuery(consulta);
+            return (Colaborador) query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 }

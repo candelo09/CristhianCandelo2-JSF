@@ -7,7 +7,9 @@ package persistencia;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import modelo.Ventas;
 
 /**
@@ -28,5 +30,29 @@ public class VentasFacade extends AbstractFacade<Ventas> implements VentasFacade
     public VentasFacade() {
         super(Ventas.class);
     }
-    
+
+    @Override
+    public Ventas findxCodigo(Integer codigo) {
+        String consulta = " SELECT v FROM Ventas v WHERE  v.idVentas=" + codigo;
+
+        try {
+            Query query = em.createQuery(consulta);
+            return (Ventas) query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    @Override
+    public Ventas traerCodigo() {
+        String consulta = " SELECT v FROM Ventas v ORDER BY v.idVentas  DESC";
+
+        try {
+            Query query = em.createQuery(consulta);
+            query.setMaxResults(1);
+            return (Ventas) query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
 }

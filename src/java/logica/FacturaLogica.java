@@ -8,8 +8,12 @@ package logica;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import modelo.Factura;
-import persistencia.FacturaFacadeLocal;
+import modelo.DetalleFactura;
+import modelo.Productos;
+import modelo.Ventas;
+import persistencia.DetalleFacturaFacadeLocal;
+import persistencia.ProductosFacadeLocal;
+import persistencia.VentasFacadeLocal;
 
 /**
  *
@@ -19,11 +23,17 @@ import persistencia.FacturaFacadeLocal;
 public class FacturaLogica implements FacturaLogicaLocal {
 
     @EJB
-
-    public FacturaFacadeLocal facturaDao;
+    public DetalleFacturaFacadeLocal facturaDao;
+    
+    @EJB
+    public ProductosFacadeLocal productosDao;
+    
+    @EJB
+    
+    public VentasFacadeLocal ventasDao;
 
     @Override
-    public void registrarItem(Factura fa) throws Exception {
+    public void registrarItem(DetalleFactura fa) throws Exception {
         if (fa == null) {
             throw new Exception("La factura no se encuentra.");
         }
@@ -31,30 +41,39 @@ public class FacturaLogica implements FacturaLogicaLocal {
     }
 
     @Override
-    public List<Factura> consultaFactura() {
+    public List<DetalleFactura> consultaFactura() {
         return facturaDao.findAll();
     }
 
     @Override
-    public void modificarItem(Factura fa) throws Exception {
+    public void modificarItem(DetalleFactura fa) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void eliminarItem(Factura fa) throws Exception {
-        if (fa == null) {
-            throw new Exception("No hay Facturas");
-        }
-
-        Factura objBorrar = facturaDao.find(fa.getIdFactura());
-
-        if (objBorrar == null) {
-            throw new Exception("La factura no existe");
-        }
-
-        facturaDao.remove(objBorrar);
-    }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public List<Productos> consultaProductos() {
+        return productosDao.findAll();
+    }
+
+    @Override
+    public void registrarVenta(Ventas ve) throws Exception {
+        ventasDao.create(ve);
+    }
+
+    @Override
+    public DetalleFactura traerValorTotal(Ventas codV, Productos codP) {
+        
+        DetalleFactura objFactura = facturaDao.traerValorTotal(codV, codP);
+        
+//        System.out.println(objFactura.getValorPro());
+        
+        return objFactura;
+    }
+
+
+   
 }

@@ -74,4 +74,16 @@ public class ProductosLogica implements ProductosLogicaLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public Productos consultarxCod(Integer cod) {
+        
+        return productosDao.consultarId(cod);
+    }
+
+    @Override
+    public Productos valorProducto(Productos valorVenta) {
+                       
+        return valorVenta;
+    }
 }

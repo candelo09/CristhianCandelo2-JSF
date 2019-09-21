@@ -56,105 +56,64 @@ and open the template in the editor.
                         <p:messages id="mensaje" showDetail="true"/>
                         <p:panelGrid columns="6" id="panelC">
 
-                            <h:outputText value="Productos "/>
-                            <p:dataTable id="pro" var="p" value="#{productosVista.listaProductos}" 
-                                         scrollable="true" scrollHeight="150"
-                                         selection="#{facturaVista.selectProductos}"
-                                         selectionMode="single"
-                                         rowKey="#{p.idProductos}"
-                                         widgetVar="productosTable">
-
-                                <p:ajax event="rowSelect" listener="#{facturaVista.seleccionarProducto(pro)}"
-                                        update=":formularioFactura:panelC" />
-
-
-                                <p:column filterBy="#{p.nombreProducto}" headerText="Elegir Producto" 
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{p.nombreProducto}"/>
-                                </p:column>
-
-                            </p:dataTable>
-
+                            <p:outputLabel value="Productos " />
+                            <p:selectOneMenu id="cmbProducto" 
+                                             binding="#{facturaVista.cmbProducto}"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                <f:selectItems value="#{facturaVista.selectItemProducto}" />
+                            </p:selectOneMenu>
                             <h:outputText value="Cantidad "/>
                             <p:inputText id="txtCantidad" binding="#{facturaVista.txtCantidad}"/>
 
                             <h:outputText value="Ventas "/>
-                            <p:dataTable id="vent" var="v" value="#{ventasVista.listaVentas}" 
-                                         scrollable="true" scrollHeight="150"
-                                         selection="#{facturaVista.selectVentas}"
-                                         selectionMode="single"
-                                         rowKey="#{v.idVentas}"
-                                         widgetVar="ventasTable">
+                            <p:inputText id="ventas" disabled="true" binding="#{facturaVista.regisVenta}"/>
 
-                                <p:ajax event="rowSelect" listener="#{facturaVista.seleccionarVentas(vent)}"
-                                        update=":formularioFactura:panelC" />
-
-
-                                <p:column filterBy="#{v.idVentas}" headerText="Elegir Venta" 
-                                          filterMatchMode="contains">
-                                    <h:outputText value="#{v.idVentas}"/>
-                                </p:column>
-
-                            </p:dataTable>
+                          
+                            <h:outputText value="Colaborador "/>
+                            <p:selectOneMenu id="cmbColaborador" 
+                                             binding="#{facturaVista.cmbColaborador}"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                <f:selectItems value="#{facturaVista.selectItemColaborador}" />
+                            </p:selectOneMenu>
 
                         </p:panelGrid>
 
                         <p:commandButton value="GUARDAR"
                                          actionListener="#{facturaVista.registrarFactura()}"
-                                         update="formularioFactura"/>
-                     
+                                         update=":formularioFactura"/>
 
-                        <p:commandButton value="Eliminar Factura" action="#{facturaVista.eliminarFactura()}" 
-                                         update="formularioFactura">
-                            <p:confirm header="Confirmación" message="Está Seguro" icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
+                        <p:commandButton value="CREAR VENTA"
+                                         actionListener="#{facturaVista.registrarVenta()}"
+                                         update=":formularioFactura"/>
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-                        </p:confirmDialog> 
-
-
-                        <p:dataTable var="f" value="#{facturaVista.listaFactura}" rows="10"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,15"
-                                     selection="#{facturaVista.selectFactura}"
-                                     selectionMode="single"
-                                     rowKey="#{f.idFactura}">
-                            <p:ajax event="rowSelect" listener="#{facturaVista.seleccionarFactura}"
-                                    update=":formularioFactura:panelC" />
-                                     
-
-                            <p:column headerText="Item">
-                                <h:outputText value="#{f.idProductos.idProductos}" />
+                        <p:dataTable var="factura" value="#{facturaVista.listaFactura}">
+                            <p:column headerText="ITEM PRODUCTO">
+                                <h:outputText value="#{factura.productos.idProductos}" />
                             </p:column>
 
-                            <p:column headerText="Descripción">
-                                <h:outputText value="#{f.idProductos.nombreProducto}" />
+                            <p:column headerText="DESCRIPCIÓN">
+                                <h:outputText value="#{factura.productos.nombreProducto}" />
                             </p:column>
 
-                            <p:column headerText="Cantidad">
-                                <h:outputText value="#{f.cantidadP}" />
+                            <p:column headerText="CANTIDAD">
+                                <h:outputText value="#{factura.cantidad}" />
                             </p:column>
 
-                            <p:column headerText="Valor Unidad">
-                                <h:outputText value="#{f.idProductos.valorVenta}" />
+                            <p:column headerText="VALOR TOTAL">
+                                <h:outputText value="#{factura.valorPro}" />
                             </p:column>
-
-                            <f:facet name="paginatorTopLeft">
-                                <p:commandButton type="button" icon="pi pi-refresh" />
-                            </f:facet>
-
-                            <f:facet name="paginatorBottomRight">
-                                <p:commandButton type="button" icon="pi pi-cloud-upload" />
-                            </f:facet>
-
                         </p:dataTable>
 
-                        <p:dataGrid var="fa" value="#{facturaVista.listaFactura}"> 
-                       
-                        </p:dataGrid> 
+                        <h:outputText value="NETO A PAGAR: "/>
+                        <p:inputText id="netoPagar" disabled="true" binding="#{facturaVista.totalNeto}"/>
+                        
+                        <p:commandButton value="FACTURAR"
+                                         actionListener="#{facturaVista.totalVenta()}"
+                                         update=":formularioFactura"/>
+
+
                     </h:form>
                 </p:layoutUnit>
 

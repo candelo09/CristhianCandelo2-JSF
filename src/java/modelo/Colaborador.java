@@ -44,9 +44,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Colaborador.findByCargo", query = "SELECT c FROM Colaborador c WHERE c.cargo = :cargo")})
 public class Colaborador implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idColaborador")
-    private List<Ventas> ventasList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +61,7 @@ public class Colaborador implements Serializable {
     private String nombreuser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 50)
     @Column(name = "claveUser")
     private String claveUser;
     @Basic(optional = false)
@@ -95,6 +92,8 @@ public class Colaborador implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "cargo")
     private String cargo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idColaborador")
+    private List<Ventas> ventasList;
 
     public Colaborador() {
     }
@@ -195,6 +194,15 @@ public class Colaborador implements Serializable {
         this.cargo = cargo;
     }
 
+    @XmlTransient
+    public List<Ventas> getVentasList() {
+        return ventasList;
+    }
+
+    public void setVentasList(List<Ventas> ventasList) {
+        this.ventasList = ventasList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -218,15 +226,6 @@ public class Colaborador implements Serializable {
     @Override
     public String toString() {
         return "modelo.Colaborador[ idUsuario=" + idUsuario + " ]";
-    }
-
-    @XmlTransient
-    public List<Ventas> getVentasList() {
-        return ventasList;
-    }
-
-    public void setVentasList(List<Ventas> ventasList) {
-        this.ventasList = ventasList;
     }
     
 }

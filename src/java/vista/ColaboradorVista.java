@@ -16,7 +16,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import logica.ColaboradorLogicaLocal;
 import modelo.Colaborador;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.password.Password;
@@ -164,9 +163,7 @@ public class ColaboradorVista {
 
 //            nuevoColaborador.setClaveUser(txtPassword.getValue().toString());
             String pass = txtPassword.getValue().toString();
-
-            String encriptar = DigestUtils.md5Hex(pass);
-
+            
             nuevoColaborador.setClaveUser(pass);
 
             nuevoColaborador.setCorreo(txtCorreo.getValue().toString());

@@ -62,8 +62,8 @@ public class Productos implements Serializable {
     private Integer cantidadStock;
     @Column(name = "CantidadActual")
     private Integer cantidadActual;
-    @OneToMany(mappedBy = "idProductos")
-    private List<Factura> facturaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productos")
+    private List<DetalleFactura> detalleFacturaList;
     @OneToMany(mappedBy = "idProducto")
     private List<Combos> combosList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProductos")
@@ -136,12 +136,12 @@ public class Productos implements Serializable {
     }
 
     @XmlTransient
-    public List<Factura> getFacturaList() {
-        return facturaList;
+    public List<DetalleFactura> getDetalleFacturaList() {
+        return detalleFacturaList;
     }
 
-    public void setFacturaList(List<Factura> facturaList) {
-        this.facturaList = facturaList;
+    public void setDetalleFacturaList(List<DetalleFactura> detalleFacturaList) {
+        this.detalleFacturaList = detalleFacturaList;
     }
 
     @XmlTransient

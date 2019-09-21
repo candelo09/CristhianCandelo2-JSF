@@ -23,5 +23,9 @@ public interface ProductosLogicaLocal {
     public void modificarProducto(Productos p) throws Exception;
 
     public void eliminarProducto(Productos p) throws Exception;
+    
+    public Productos consultarxCod(Integer cod);
+    
+    public Productos valorProducto(Productos valorVenta);
 
 }

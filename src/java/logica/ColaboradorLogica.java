@@ -126,4 +126,9 @@ public class ColaboradorLogica implements ColaboradorLogicaLocal {
         
     }
 
+    @Override
+    public Colaborador consultaxIden(Integer idUsuario) {
+        return colaboradorDao.findxIdColaborador(idUsuario);
+    }
+
 }
