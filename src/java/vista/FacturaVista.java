@@ -37,9 +37,10 @@ import org.primefaces.event.SelectEvent;
  */
 @Named(value = "facturaVista")
 @ViewScoped
-@Default 
+@Default
 @Any
-public class FacturaVista  implements Serializable{
+public class FacturaVista implements Serializable {
+
     @EJB
     private FacturaLogicaLocal facturaLogica;
     @EJB
@@ -67,6 +68,7 @@ public class FacturaVista  implements Serializable{
     private Ventas selectVentas;
     private Productos selectProductos;
     private Date fechaVentaActual;
+    Ventas nuevaVenta = new Ventas();
     Date fechaActual = new Date();
 
     public List<DetalleFactura> getListaFactura() {
@@ -199,7 +201,6 @@ public class FacturaVista  implements Serializable{
         this.contadorFactura = contadorFactura;
     }
 
-   
     public void registrarFactura() {
 
         try {
@@ -214,7 +215,7 @@ public class FacturaVista  implements Serializable{
             regisVenta.setValue(objIdVentas.getIdVentas());
 
             Ventas objVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
-         
+
             nuevaFactura.setVentas(objVenta);
 
             nuevaFactura.setCantidad(Integer.parseInt(txtCantidad.getValue().toString()));
@@ -227,10 +228,9 @@ public class FacturaVista  implements Serializable{
 
             nuevaFactura.setValorPro(valorTotalProducto);
 
-                       
             netoPagar = netoPagar + nuevaFactura.getValorPro();
 //            netoPagar += nuevaFactura.getValorPro();
-            
+
             System.out.println(netoPagar);
 
             DetalleFacturaPK objPk = new DetalleFacturaPK();
@@ -255,14 +255,11 @@ public class FacturaVista  implements Serializable{
 
         try {
 
-            Ventas nuevaVenta = new Ventas();
-
             Colaborador objColaborador = colaboradorLogica.consultaxIden(Integer.parseInt(cmbColaborador.getValue().toString()));
             nuevaVenta.setIdColaborador(objColaborador);
 
-            nuevaVenta.setFecha(fechaActual);
-            
-            fechaVentaActual = nuevaVenta.getFecha();
+//            nuevaVenta.setFecha(fechaActual);
+//            fechaVentaActual = nuevaVenta.getFecha();
             ventasLogica.registrarVenta(nuevaVenta);
 
             FacesContext.getCurrentInstance().addMessage(null,
@@ -286,17 +283,16 @@ public class FacturaVista  implements Serializable{
     public void totalVenta() {
 
         try {
-            Ventas nuevaVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
-                        
+//            Ventas traerVenta = selectVentas;
+            
             totalNeto.setValue(netoPagar);
-                        
-//            nuevaVenta.setFecha(fechaActual);
-            Long netoPagar1 = (netoPagar).longValue();
-            
-            nuevaVenta.setValorTotal(netoPagar1);
-            
-            ventasLogica.registrarVenta(nuevaVenta);
 
+            nuevaVenta.setFecha(fechaActual);
+            Long netoPagar1 = (netoPagar).longValue();
+
+            nuevaVenta.setValorTotal(netoPagar1);
+
+            ventasLogica.modificarVenta(nuevaVenta);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
                             "El total de la venta.")); // Muestra mensaje de información al usario.
@@ -306,7 +302,8 @@ public class FacturaVista  implements Serializable{
                             ex.getMessage()));
         }
     }
+
     public FacturaVista() {
     }
-    
+
 }

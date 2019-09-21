@@ -28,13 +28,7 @@ public class VentasLogica implements VentasLogicaLocal {
             throw new Exception("La venta no existe");
         }
 
-//        Ventas objVentas = ventasDao.findxCodigo(ve.getIdVentas());
-//        if(objVentas != null){
-//            throw  new Exception("La venta ya se encuentra registrada");
-//        }
-        if (ve.getFecha() == null) {
-            throw new Exception("Debe ingresar la fecha");
-        }
+       
 
         ventasDao.create(ve);
     }
@@ -46,7 +40,7 @@ public class VentasLogica implements VentasLogicaLocal {
 
     @Override
     public void modificarVenta(Ventas ve) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ventasDao.edit(ve);
     }
 
     @Override
@@ -69,6 +63,13 @@ public class VentasLogica implements VentasLogicaLocal {
 
 
         return objVentas;
+    }
+
+    @Override
+    public void registrarVentas() throws Exception {
+         Ventas objVentas = ventasDao.traerCodigo();
+         
+         ventasDao.create(objVentas);
     }
 
 }
