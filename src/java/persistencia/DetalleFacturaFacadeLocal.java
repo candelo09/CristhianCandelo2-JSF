@@ -26,7 +26,7 @@ public interface DetalleFacturaFacadeLocal {
 
     DetalleFactura find(Object id);
     
-    DetalleFactura traerValorTotal(Ventas idVendas, Productos idProductos);
+    DetalleFactura traerValorTotal(Ventas idVendas);
 
     List<DetalleFactura> findAll();
 

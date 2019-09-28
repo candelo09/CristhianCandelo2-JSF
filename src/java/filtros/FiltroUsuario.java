@@ -33,7 +33,7 @@ public class FiltroUsuario implements Filter {
         
         if (u != null) {
              chain.doFilter(request, response);          
-             System.out.println("valida la sesion "+u.getApellido());
+             
         } else {
             ((HttpServletResponse) response).sendRedirect("../SesionInvalida.xhtml");
         }

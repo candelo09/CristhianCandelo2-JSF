@@ -8,7 +8,9 @@ package logica;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import modelo.DetalleFactura;
 import modelo.Ventas;
+import persistencia.DetalleFacturaFacadeLocal;
 import persistencia.VentasFacadeLocal;
 
 /**
@@ -19,8 +21,10 @@ import persistencia.VentasFacadeLocal;
 public class VentasLogica implements VentasLogicaLocal {
 
     @EJB
-
     public VentasFacadeLocal ventasDao;
+
+    @EJB
+    public DetalleFacturaFacadeLocal facturaDao;
 
     @Override
     public void registrarVenta(Ventas ve) throws Exception {
@@ -38,15 +42,14 @@ public class VentasLogica implements VentasLogicaLocal {
 
     @Override
     public void modificarVenta(Ventas ve) throws Exception {
-        if (ve == null) {
-            throw new Exception("La venta no ha sido creada");
-        }
-        
+
         Ventas objVentas = ventasDao.traerCodigo();
         
-        if(objVentas == null){
-            throw  new Exception("La venta no ha sido creada");
+        if(objVentas.getValorTotal() != null){
+            throw  new Exception("Debe crear una nueva venta.");
         }
+      
+      
         ventasDao.edit(ve);
     }
 
@@ -67,15 +70,10 @@ public class VentasLogica implements VentasLogicaLocal {
     public Ventas traerCodVenta() {
 
         Ventas objVentas = ventasDao.traerCodigo();
+        
 
         return objVentas;
     }
 
-    @Override
-    public void registrarVentas() throws Exception {
-        Ventas objVentas = ventasDao.traerCodigo();
-
-        ventasDao.create(objVentas);
-    }
 
 }

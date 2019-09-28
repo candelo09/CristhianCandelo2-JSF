@@ -55,4 +55,17 @@ public class VentasFacade extends AbstractFacade<Ventas> implements VentasFacade
             return null;
         }
     }
+
+    @Override
+    public int totalRegistros() {
+        String consulta = "SELECT COUNT(*) FROM Ventas";
+
+        try {
+            Query query = em.createQuery(consulta);
+            return (int) query.getSingleResult();
+            
+        } catch (NoResultException nre) {
+            return 0;
+        }
+    }
 }

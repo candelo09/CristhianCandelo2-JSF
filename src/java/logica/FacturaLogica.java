@@ -29,14 +29,13 @@ public class FacturaLogica implements FacturaLogicaLocal {
     public ProductosFacadeLocal productosDao;
     
     @EJB
-    
     public VentasFacadeLocal ventasDao;
 
     @Override
     public void registrarItem(DetalleFactura fa) throws Exception {
-        if (fa == null) {
-            throw new Exception("La factura no se encuentra.");
-        }
+        
+
+      
         facturaDao.create(fa);
     }
 
@@ -64,15 +63,7 @@ public class FacturaLogica implements FacturaLogicaLocal {
         ventasDao.create(ve);
     }
 
-    @Override
-    public DetalleFactura traerValorTotal(Ventas codV, Productos codP) {
-        
-        DetalleFactura objFactura = facturaDao.traerValorTotal(codV, codP);
-        
-//        System.out.println(objFactura.getValorPro());
-        
-        return objFactura;
-    }
+ 
 
 
    

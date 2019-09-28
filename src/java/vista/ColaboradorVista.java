@@ -20,7 +20,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import logica.ColaboradorLogicaLocal;
+import logica.VentasLogicaLocal;
 import modelo.Colaborador;
+import modelo.Ventas;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.password.Password;
@@ -34,10 +36,12 @@ import org.primefaces.event.SelectEvent;
 @SessionScoped
 @Default
 @Any
-public class ColaboradorVista implements Serializable{
+public class ColaboradorVista implements Serializable {
 
     @EJB
     private ColaboradorLogicaLocal colaboradorLogica;
+    @EJB
+    private VentasLogicaLocal ventasLogica;
 
     private List<Colaborador> listaColaboradores;
     private InputText txtIdentificacion;
@@ -56,6 +60,7 @@ public class ColaboradorVista implements Serializable{
     private CommandButton btnRegistrar;
     private CommandButton btnModificar;
     private CommandButton btnEliminar;
+    Ventas nuevaVenta = new Ventas();
     private Colaborador selectColaborador;
     private Colaborador usuarioLogueado;
 
@@ -171,7 +176,7 @@ public class ColaboradorVista implements Serializable{
 
 //            nuevoColaborador.setClaveUser(txtPassword.getValue().toString());
             String pass = txtPassword.getValue().toString();
-            
+
             nuevoColaborador.setClaveUser(pass);
 
             nuevoColaborador.setCorreo(txtCorreo.getValue().toString());
@@ -309,7 +314,7 @@ public class ColaboradorVista implements Serializable{
     public void setIngresar(CommandButton ingresar) {
         this.ingresar = ingresar;
     }
-    
+
     public void ingresarUser() {
 
         try {
@@ -321,26 +326,25 @@ public class ColaboradorVista implements Serializable{
             nuevoUsuario.setClaveUser(clave.getValue().toString());
 
             usuarioLogueado = colaboradorLogica.ingresar(nuevoUsuario);
-
+            
             // Guardo al usuario en la sesión.
             FacesContext.getCurrentInstance().getExternalContext()
                     .getSessionMap().put("usuario", usuarioLogueado);
-            
-            
+
             if (usuarioLogueado.getCargo().equals("administrador")) {
                 //Redirecciono a la página.
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("admin/principal.xhtml");
-            
+
             }
-               
-               txtUserLogueado = usuarioLogueado.getNombre() +" "+ usuarioLogueado.getApellido();        
-      
+
+            txtUserLogueado = usuarioLogueado.getNombre() + " " + usuarioLogueado.getApellido();
+
             if (usuarioLogueado.getCargo().equals("colaborador")) {
-                
+
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("colaborador/principal.xhtml");
-                System.out.println("Nombre Usuario " +usuarioLogueado.getNombre() + usuarioLogueado.getApellido());
+                System.out.println("Nombre Usuario " + usuarioLogueado.getNombre() + usuarioLogueado.getApellido());
             }
 
         } catch (Exception ex) {
@@ -351,6 +355,24 @@ public class ColaboradorVista implements Serializable{
             Logger.getLogger(ColaboradorVista.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void registrarVenta() {
+
+        try {
+           
+            nuevaVenta.setIdColaborador(usuarioLogueado);
+
+            ventasLogica.registrarVenta(nuevaVenta);
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
+                            "Venta Registrada correctamente.")); // Muestra mensaje de información al usario.
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "La venta ya se encuentra registrado", //Muestra mensaje de error al usuario.
+                            ex.getMessage()));
+        }
     }
 
     public void cerrarSesion() {

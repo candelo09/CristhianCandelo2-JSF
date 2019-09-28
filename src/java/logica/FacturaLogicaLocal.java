@@ -27,8 +27,7 @@ public interface FacturaLogicaLocal {
     public void modificarItem(DetalleFactura fa) throws Exception;
         
     public List<Productos> consultaProductos();
-    
-    public DetalleFactura traerValorTotal(Ventas codV, Productos codP);
+   
     
     
     

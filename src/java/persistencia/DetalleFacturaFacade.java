@@ -34,10 +34,9 @@ public class DetalleFacturaFacade extends AbstractFacade<DetalleFactura> impleme
     }
 
     @Override
-    public DetalleFactura traerValorTotal(Ventas idVendas, Productos idProductos) {
-         String consulta = " SELECT f FROM DetalleFactura f WHERE  f.ventas.idVentas="+ idVendas.getIdVentas()+
-                 " AND f.productos.idProductos="+idProductos.getIdProductos();
-
+    public DetalleFactura traerValorTotal(Ventas idVendas) {
+         String consulta = " SELECT f FROM DetalleFactura f WHERE  f.ventas.idVentas="+ idVendas.getIdVentas();
+                 ;
         try {
             Query query = em.createQuery(consulta);
             return (DetalleFactura) query.getSingleResult();

@@ -16,9 +16,7 @@ import modelo.Ventas;
 @Local
 public interface VentasLogicaLocal {
     public void registrarVenta(Ventas ve) throws Exception;
-    
-    public void registrarVentas() throws Exception;
-    
+   
     public List<Ventas> consultaVentas();
     
     public void modificarVenta(Ventas ve) throws Exception;

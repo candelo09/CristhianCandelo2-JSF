@@ -27,6 +27,8 @@ public interface VentasFacadeLocal {
     Ventas findxCodigo(Integer codigo);
 
     Ventas traerCodigo();
+    
+    int totalRegistros();
 
     List<Ventas> findAll();
 

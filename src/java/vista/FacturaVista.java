@@ -30,6 +30,7 @@ import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
+import persistencia.DetalleFacturaFacadeLocal;
 
 /**
  *
@@ -53,9 +54,9 @@ public class FacturaVista implements Serializable {
     private List<DetalleFactura> listaFactura;
     private List<SelectItem> selectItemProducto;
     private List<SelectItem> selectItemColaborador;
-    private int contadorFactura;
     private InputText txtCantidad;
     private InputText regisVenta;
+    private InputText ventaParcial;
     private InputText totalNeto;
     private SelectOneMenu cmbProducto;
     private SelectOneMenu cmbColaborador;
@@ -67,7 +68,7 @@ public class FacturaVista implements Serializable {
     private DetalleFactura selectFactura;
     private Ventas selectVentas;
     private Productos selectProductos;
-    private Date fechaVentaActual;
+    private String ItemProducto;
     Ventas nuevaVenta = new Ventas();
     Date fechaActual = new Date();
 
@@ -141,6 +142,14 @@ public class FacturaVista implements Serializable {
         return netoPagar;
     }
 
+    public InputText getVentaParcial() {
+        return ventaParcial;
+    }
+
+    public void setVentaParcial(InputText ventaParcial) {
+        this.ventaParcial = ventaParcial;
+    }
+
     public void setNetoPagar(Double netoPagar) {
         this.netoPagar = netoPagar;
     }
@@ -193,17 +202,19 @@ public class FacturaVista implements Serializable {
         this.selectProductos = selectProductos;
     }
 
-    public int getContadorFactura() {
-        return contadorFactura;
+    public String getItemProducto() {
+        return ItemProducto;
     }
 
-    public void setContadorFactura(int contadorFactura) {
-        this.contadorFactura = contadorFactura;
+    public void setItemProducto(String ItemProducto) {
+        this.ItemProducto = ItemProducto;
     }
 
+  
     public void registrarFactura() {
 
         try {
+
             DetalleFactura nuevaFactura = new DetalleFactura();
 
             Productos objProducto = productosLogica.consultarxCod(Integer.parseInt(cmbProducto.getValue().toString()));
@@ -211,7 +222,6 @@ public class FacturaVista implements Serializable {
             Productos objValorVenta = productosLogica.valorProducto(objProducto);
 
             Ventas objIdVentas = ventasLogica.traerCodVenta();
-
             regisVenta.setValue(objIdVentas.getIdVentas());
 
             Ventas objVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
@@ -229,45 +239,26 @@ public class FacturaVista implements Serializable {
             nuevaFactura.setValorPro(valorTotalProducto);
 
             netoPagar = netoPagar + nuevaFactura.getValorPro();
-//            netoPagar += nuevaFactura.getValorPro();
 
-            System.out.println(netoPagar);
+            ItemProducto = cmbProducto.getValue().toString();
 
+
+
+//            System.out.println(netoPagar);
             DetalleFacturaPK objPk = new DetalleFacturaPK();
             objPk.setCodProducto(objProducto.getIdProductos());
             objPk.setCodVenta(objVenta.getIdVentas());
 
             nuevaFactura.setDetalleFacturaPK(objPk);
             facturaLogica.registrarItem(nuevaFactura);
-
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
                             "Producto Guardado.")); // Muestra mensaje de información al usario.
+            ventaParcial.setValue(netoPagar);
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "La factura no ha sido creada", //Muestra mensaje de error al usuario.
-                            ex.getMessage()));
-        }
-
-    }
-
-    public void registrarVenta() {
-
-        try {
-
-            Colaborador objColaborador = colaboradorLogica.consultaxIden(Integer.parseInt(cmbColaborador.getValue().toString()));
-            nuevaVenta.setIdColaborador(objColaborador);
-
-//            nuevaVenta.setFecha(fechaActual);
-//            fechaVentaActual = nuevaVenta.getFecha();
-            ventasLogica.registrarVenta(nuevaVenta);
-
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
-                            "Venta Registrada correctamente.")); // Muestra mensaje de información al usario.
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "La venta ya se encuentra registrado", //Muestra mensaje de error al usuario.
                             ex.getMessage()));
         }
 
@@ -279,30 +270,39 @@ public class FacturaVista implements Serializable {
         txtCantidad.setValue(selectFactura.getCantidad());
         regisVenta.setValue(selectVentas.getIdVentas());
     }
+    
 
     public void totalVenta() {
 
         try {
-//            Ventas traerVenta = selectVentas;
+            Ventas traerVenta = ventasLogica.traerCodVenta();
+
+            traerVenta.setFecha(fechaActual);
             
-            totalNeto.setValue(netoPagar);
+            
+            Long ventaTotal = (netoPagar).longValue();
+            
+            totalNeto.setValue(ventaTotal);
+            
+            traerVenta.setValorTotal(Long.valueOf(totalNeto.getValue().toString()));
+           
+            ventasLogica.modificarVenta(traerVenta);
 
-            nuevaVenta.setFecha(fechaActual);
-            Long netoPagar1 = (netoPagar).longValue();
-
-            nuevaVenta.setValorTotal(netoPagar1);
-
-            ventasLogica.modificarVenta(nuevaVenta);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
-                            "El total de la venta.")); // Muestra mensaje de información al usario.
+                            "El total de la venta es " + netoPagar)); // Muestra mensaje de información al usario.
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurio un error.", //Muestra mensaje de error al usuario.
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "La factura no ha sido creada.", //Muestra mensaje de error al usuario.
                             ex.getMessage()));
         }
     }
-
+    public void mostrarVentaTotal(){
+        FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
+                            "El total de la venta es " + netoPagar));
+    }
     public FacturaVista() {
     }
 
