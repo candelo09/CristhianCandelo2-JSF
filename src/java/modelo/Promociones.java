@@ -17,12 +17,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author CANDELO
+ * @author CrisCande
  */
 @Entity
 @Table(name = "promociones")
@@ -40,21 +41,27 @@ public class Promociones implements Serializable {
     @Basic(optional = false)
     @Column(name = "idPromociones")
     private Integer idPromociones;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "desto")
-    private Double desto;
+    private double desto;
     @Size(max = 10)
     @Column(name = "estado")
     private String estado;
-    @JoinColumn(name = "idProductos", referencedColumnName = "idProductos")
+    @JoinColumn(name = "idProducto", referencedColumnName = "idProductos")
     @ManyToOne(optional = false)
-    private Productos idProductos;
+    private Productos idProducto;
 
     public Promociones() {
     }
 
     public Promociones(Integer idPromociones) {
         this.idPromociones = idPromociones;
+    }
+
+    public Promociones(Integer idPromociones, double desto) {
+        this.idPromociones = idPromociones;
+        this.desto = desto;
     }
 
     public Integer getIdPromociones() {
@@ -65,11 +72,11 @@ public class Promociones implements Serializable {
         this.idPromociones = idPromociones;
     }
 
-    public Double getDesto() {
+    public double getDesto() {
         return desto;
     }
 
-    public void setDesto(Double desto) {
+    public void setDesto(double desto) {
         this.desto = desto;
     }
 
@@ -81,12 +88,12 @@ public class Promociones implements Serializable {
         this.estado = estado;
     }
 
-    public Productos getIdProductos() {
-        return idProductos;
+    public Productos getIdProducto() {
+        return idProducto;
     }
 
-    public void setIdProductos(Productos idProductos) {
-        this.idProductos = idProductos;
+    public void setIdProducto(Productos idProducto) {
+        this.idProducto = idProducto;
     }
 
     @Override

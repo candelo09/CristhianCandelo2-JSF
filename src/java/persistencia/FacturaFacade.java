@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import modelo.DetalleFactura;
+import modelo.Factura;
 import modelo.Productos;
 import modelo.Ventas;
 
@@ -19,7 +19,7 @@ import modelo.Ventas;
  * @author CANDELO
  */
 @Stateless
-public class DetalleFacturaFacade extends AbstractFacade<DetalleFactura> implements DetalleFacturaFacadeLocal {
+public class FacturaFacade extends AbstractFacade<Factura> implements FacturaFacadeLocal {
 
     @PersistenceContext(unitName = "facturacionWebPU")
     private EntityManager em;
@@ -29,17 +29,17 @@ public class DetalleFacturaFacade extends AbstractFacade<DetalleFactura> impleme
         return em;
     }
 
-    public DetalleFacturaFacade() {
-        super(DetalleFactura.class);
+    public FacturaFacade() {
+        super(Factura.class);
     }
 
     @Override
-    public DetalleFactura traerValorTotal(Ventas idVendas) {
-         String consulta = " SELECT f FROM DetalleFactura f WHERE  f.ventas.idVentas="+ idVendas.getIdVentas();
+    public Factura traerValorTotal(Ventas idVendas) {
+         String consulta = " SELECT f FROM Factura f WHERE  f.ventas.idVentas="+ idVendas.getIdVentas();
                  ;
         try {
             Query query = em.createQuery(consulta);
-            return (DetalleFactura) query.getSingleResult();
+            return (Factura) query.getSingleResult();
         } catch (NoResultException nre) {
             return null;
         }

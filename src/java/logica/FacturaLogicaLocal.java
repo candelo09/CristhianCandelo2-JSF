@@ -7,7 +7,7 @@ package logica;
 
 import java.util.List;
 import javax.ejb.Local;
-import modelo.DetalleFactura;
+import modelo.Factura;
 import modelo.Productos;
 import modelo.Ventas;
 
@@ -18,13 +18,13 @@ import modelo.Ventas;
 @Local
 public interface FacturaLogicaLocal {
     
-    public void registrarItem(DetalleFactura fa) throws Exception;
+    public void registrarItem(Factura fa) throws Exception;
     
     public void registrarVenta(Ventas ve) throws Exception;
     
-    public List<DetalleFactura> consultaFactura();
+    public List<Factura> consultaFactura();
     
-    public void modificarItem(DetalleFactura fa) throws Exception;
+    public void modificarItem(Factura fa) throws Exception;
         
     public List<Productos> consultaProductos();
    

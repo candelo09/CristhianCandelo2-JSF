@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author CANDELO
+ * @author CrisCande
  */
 @Entity
 @Table(name = "productos")
@@ -62,17 +62,17 @@ public class Productos implements Serializable {
     private Integer cantidadStock;
     @Column(name = "CantidadActual")
     private Integer cantidadActual;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productos")
-    private List<DetalleFactura> detalleFacturaList;
+    @OneToMany(mappedBy = "idProductos")
+    private List<Factura> facturaList;
     @OneToMany(mappedBy = "idProducto")
     private List<Combos> combosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProductos")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto")
     private List<Promociones> promocionesList;
     @JoinColumn(name = "idCategorias", referencedColumnName = "idCategoria")
     @ManyToOne
     private Categoria idCategorias;
     @JoinColumn(name = "idProveedor", referencedColumnName = "idProveedores")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Proveedores idProveedor;
 
     public Productos() {
@@ -136,12 +136,12 @@ public class Productos implements Serializable {
     }
 
     @XmlTransient
-    public List<DetalleFactura> getDetalleFacturaList() {
-        return detalleFacturaList;
+    public List<Factura> getFacturaList() {
+        return facturaList;
     }
 
-    public void setDetalleFacturaList(List<DetalleFactura> detalleFacturaList) {
-        this.detalleFacturaList = detalleFacturaList;
+    public void setFacturaList(List<Factura> facturaList) {
+        this.facturaList = facturaList;
     }
 
     @XmlTransient

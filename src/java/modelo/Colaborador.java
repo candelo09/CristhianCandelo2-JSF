@@ -18,14 +18,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author CANDELO
+ * @author CrisCande
  */
 @Entity
 @Table(name = "colaborador")
@@ -50,46 +49,30 @@ public class Colaborador implements Serializable {
     @Basic(optional = false)
     @Column(name = "idUsuario")
     private Integer idUsuario;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "identificacion")
-    private long identificacion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    private Integer identificacion;
+    @Size(max = 255)
     @Column(name = "nombreuser")
     private String nombreuser;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 10)
     @Column(name = "claveUser")
     private String claveUser;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     @Column(name = "apellido")
     private String apellido;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     @Column(name = "correo")
     private String correo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    @Size(max = 10)
     @Column(name = "telefono")
     private String telefono;
     @Size(max = 50)
     @Column(name = "direccion")
     private String direccion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "cargo")
     private String cargo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idColaborador")
@@ -102,18 +85,6 @@ public class Colaborador implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Colaborador(Integer idUsuario, long identificacion, String nombreuser, String claveUser, String nombre, String apellido, String correo, String telefono, String cargo) {
-        this.idUsuario = idUsuario;
-        this.identificacion = identificacion;
-        this.nombreuser = nombreuser;
-        this.claveUser = claveUser;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.cargo = cargo;
-    }
-
     public Integer getIdUsuario() {
         return idUsuario;
     }
@@ -122,11 +93,11 @@ public class Colaborador implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public long getIdentificacion() {
+    public Integer getIdentificacion() {
         return identificacion;
     }
 
-    public void setIdentificacion(long identificacion) {
+    public void setIdentificacion(Integer identificacion) {
         this.identificacion = identificacion;
     }
 

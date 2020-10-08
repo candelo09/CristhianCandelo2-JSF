@@ -8,10 +8,10 @@ package logica;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import modelo.DetalleFactura;
+import modelo.Factura;
 import modelo.Ventas;
-import persistencia.DetalleFacturaFacadeLocal;
 import persistencia.VentasFacadeLocal;
+import persistencia.FacturaFacadeLocal;
 
 /**
  *
@@ -24,7 +24,7 @@ public class VentasLogica implements VentasLogicaLocal {
     public VentasFacadeLocal ventasDao;
 
     @EJB
-    public DetalleFacturaFacadeLocal facturaDao;
+    public FacturaFacadeLocal facturaDao;
 
     @Override
     public void registrarVenta(Ventas ve) throws Exception {

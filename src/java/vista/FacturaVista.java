@@ -22,15 +22,15 @@ import logica.FacturaLogicaLocal;
 import logica.ProductosLogicaLocal;
 import logica.VentasLogicaLocal;
 import modelo.Colaborador;
-import modelo.DetalleFactura;
-import modelo.DetalleFacturaPK;
+import modelo.Factura;
+//import modelo.DetalleFacturaPK;
 import modelo.Productos;
 import modelo.Ventas;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
-import persistencia.DetalleFacturaFacadeLocal;
+import persistencia.FacturaFacadeLocal;
 
 /**
  *
@@ -51,7 +51,7 @@ public class FacturaVista implements Serializable {
     @EJB
     private ColaboradorLogicaLocal colaboradorLogica;
 
-    private List<DetalleFactura> listaFactura;
+    private List<Factura> listaFactura;
     private List<SelectItem> selectItemProducto;
     private List<SelectItem> selectItemColaborador;
     private InputText txtCantidad;
@@ -65,19 +65,19 @@ public class FacturaVista implements Serializable {
     private Double valorTotalProducto;
     private Integer cantidad = 0;
     private Double valorProducto = 0.0;
-    private DetalleFactura selectFactura;
+    private Factura selectFactura;
     private Ventas selectVentas;
     private Productos selectProductos;
     private String ItemProducto;
     Ventas nuevaVenta = new Ventas();
     Date fechaActual = new Date();
 
-    public List<DetalleFactura> getListaFactura() {
+    public List<Factura> getListaFactura() {
         listaFactura = facturaLogica.consultaFactura();
         return listaFactura;
     }
 
-    public void setListaFactura(List<DetalleFactura> listaFactura) {
+    public void setListaFactura(List<Factura> listaFactura) {
         this.listaFactura = listaFactura;
     }
 
@@ -114,11 +114,11 @@ public class FacturaVista implements Serializable {
         this.selectItemProducto = selectItemProducto;
     }
 
-    public DetalleFactura getSelectFactura() {
+    public Factura getSelectFactura() {
         return selectFactura;
     }
 
-    public void setSelectFactura(DetalleFactura selectFactura) {
+    public void setSelectFactura(Factura selectFactura) {
         this.selectFactura = selectFactura;
     }
 
@@ -215,7 +215,7 @@ public class FacturaVista implements Serializable {
 
         try {
 
-            DetalleFactura nuevaFactura = new DetalleFactura();
+            Factura nuevaFactura = new Factura();
 
             Productos objProducto = productosLogica.consultarxCod(Integer.parseInt(cmbProducto.getValue().toString()));
 
@@ -226,31 +226,34 @@ public class FacturaVista implements Serializable {
 
             Ventas objVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
 
-            nuevaFactura.setVentas(objVenta);
+            nuevaFactura.setIdVentas(objIdVentas);
+            
+            nuevaFactura.setIdProductos(objProducto);
 
-            nuevaFactura.setCantidad(Integer.parseInt(txtCantidad.getValue().toString()));
+            nuevaFactura.setCantidadP(Integer.parseInt(txtCantidad.getValue().toString()));
 
-            cantidad = nuevaFactura.getCantidad();
+            cantidad = nuevaFactura.getCantidadP();
 
             valorProducto = objValorVenta.getValorVenta();
 
             valorTotalProducto = cantidad * valorProducto;
 
-            nuevaFactura.setValorPro(valorTotalProducto);
+            nuevaFactura.setValorTotalFactura(valorTotalProducto);
 
-            netoPagar = netoPagar + nuevaFactura.getValorPro();
+            netoPagar = netoPagar + nuevaFactura.getValorTotalFactura();
 
             ItemProducto = cmbProducto.getValue().toString();
 
-
+            regisVenta.setValue(objVenta.getIdVentas());
 
 //            System.out.println(netoPagar);
-            DetalleFacturaPK objPk = new DetalleFacturaPK();
-            objPk.setCodProducto(objProducto.getIdProductos());
-            objPk.setCodVenta(objVenta.getIdVentas());
-
-            nuevaFactura.setDetalleFacturaPK(objPk);
+//            DetalleFacturaPK objPk = new DetalleFacturaPK();
+//            objPk.setCodProducto(objProducto.getIdProductos());
+//            objPk.setCodVenta(objVenta.getIdVentas());
+//
+//            nuevaFactura.setDetalleFacturaPK(objPk);
             facturaLogica.registrarItem(nuevaFactura);
+            
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
                             "Producto Guardado.")); // Muestra mensaje de información al usario.
@@ -265,9 +268,9 @@ public class FacturaVista implements Serializable {
     }
 
     public void seleccionarFactura(SelectEvent fac) {
-        selectFactura = (DetalleFactura) fac.getObject();
+        selectFactura = (Factura) fac.getObject();
         cmbProducto.setValue(selectProductos.getIdProductos());
-        txtCantidad.setValue(selectFactura.getCantidad());
+        txtCantidad.setValue(selectFactura.getCantidadP());
         regisVenta.setValue(selectVentas.getIdVentas());
     }
     
@@ -277,14 +280,13 @@ public class FacturaVista implements Serializable {
         try {
             Ventas traerVenta = ventasLogica.traerCodVenta();
 
-            traerVenta.setFecha(fechaActual);
-            
+            traerVenta.setFecha(fechaActual);      
             
             Long ventaTotal = (netoPagar).longValue();
             
             totalNeto.setValue(ventaTotal);
             
-            traerVenta.setValorTotal(Long.valueOf(totalNeto.getValue().toString()));
+            traerVenta.setValorTotal(Double.valueOf(totalNeto.getValue().toString()));
            
             ventasLogica.modificarVenta(traerVenta);
 

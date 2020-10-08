@@ -95,7 +95,7 @@ public class PromocionesVista {
 
             Productos producto = selectProductos;
 
-            nuevaPromocion.setIdProductos(producto);
+            nuevaPromocion.setIdProducto(producto);
 
             nuevaPromocion.setDesto(Double.parseDouble(txtDescuento.getValue().toString()));
 
@@ -135,7 +135,7 @@ public class PromocionesVista {
 
             Productos producto = selectProductos;
 
-            modificaPromociones.setIdProductos(producto);
+            modificaPromociones.setIdProducto(producto);
 
             modificaPromociones.setDesto(Double.parseDouble(txtDescuento.getValue().toString()));
 

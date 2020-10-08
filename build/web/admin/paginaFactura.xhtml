@@ -82,19 +82,19 @@ and open the template in the editor.
 
                         <p:dataTable var="factura" value="#{facturaVista.listaFactura}">
                             <p:column headerText="ITEM PRODUCTO">
-                                <h:outputText value="#{factura.productos.idProductos}" />
+                                <h:outputText value="#{facturaVista.itemProducto}" />
                             </p:column>
 
                             <p:column headerText="DESCRIPCIÓN">
-                                <h:outputText value="#{factura.productos.nombreProducto}" />
+                                <h:outputText value="#{facturaVista.netoPagar}" />
                             </p:column>
 
                             <p:column headerText="CANTIDAD">
-                                <h:outputText value="#{factura.cantidad}" />
+                                <h:outputText value="#{facturaVista.txtFechaVenta}" />
                             </p:column>
 
                             <p:column headerText="VALOR TOTAL">
-                                <h:outputText value="#{factura.valorPro}" />
+                                <h:outputText value="#{facturaVista.txtCantidad}" />
                             </p:column>
                         </p:dataTable>
 
@@ -138,6 +138,6 @@ and open the template in the editor.
         </h:body>
 
     </f:view>
-
+    
 
 </html>

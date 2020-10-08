@@ -59,7 +59,7 @@ public class ColaboradorLogica implements ColaboradorLogicaLocal {
             throw new Exception("El cargo debe ser obligatorio.");
         }
         
-        Colaborador objColaborador = colaboradorDao.findxIdentificacion(co.getIdentificacion());
+        Colaborador objColaborador = colaboradorDao.findxIdentificacion(Long.parseLong(co.getIdentificacion().toString()));
         
         if(objColaborador != null){
             throw new Exception("El colaborador ya se encuentra registrado.");

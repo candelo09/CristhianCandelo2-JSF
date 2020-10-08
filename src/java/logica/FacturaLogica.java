@@ -8,12 +8,12 @@ package logica;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import modelo.DetalleFactura;
+import modelo.Factura;
 import modelo.Productos;
 import modelo.Ventas;
-import persistencia.DetalleFacturaFacadeLocal;
 import persistencia.ProductosFacadeLocal;
 import persistencia.VentasFacadeLocal;
+import persistencia.FacturaFacadeLocal;
 
 /**
  *
@@ -23,7 +23,7 @@ import persistencia.VentasFacadeLocal;
 public class FacturaLogica implements FacturaLogicaLocal {
 
     @EJB
-    public DetalleFacturaFacadeLocal facturaDao;
+    public FacturaFacadeLocal facturaDao;
     
     @EJB
     public ProductosFacadeLocal productosDao;
@@ -32,7 +32,7 @@ public class FacturaLogica implements FacturaLogicaLocal {
     public VentasFacadeLocal ventasDao;
 
     @Override
-    public void registrarItem(DetalleFactura fa) throws Exception {
+    public void registrarItem(Factura fa) throws Exception {
         
 
       
@@ -40,12 +40,12 @@ public class FacturaLogica implements FacturaLogicaLocal {
     }
 
     @Override
-    public List<DetalleFactura> consultaFactura() {
+    public List<Factura> consultaFactura() {
         return facturaDao.findAll();
     }
 
     @Override
-    public void modificarItem(DetalleFactura fa) throws Exception {
+    public void modificarItem(Factura fa) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

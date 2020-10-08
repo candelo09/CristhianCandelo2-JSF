@@ -7,6 +7,7 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,15 +18,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author CANDELO
+ * @author CrisCande
  */
 @Entity
 @Table(name = "ventas")
@@ -33,10 +36,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Ventas.findAll", query = "SELECT v FROM Ventas v")
     , @NamedQuery(name = "Ventas.findByIdVentas", query = "SELECT v FROM Ventas v WHERE v.idVentas = :idVentas")
+    , @NamedQuery(name = "Ventas.findByValorTotal", query = "SELECT v FROM Ventas v WHERE v.valorTotal = :valorTotal")
     , @NamedQuery(name = "Ventas.findByIva", query = "SELECT v FROM Ventas v WHERE v.iva = :iva")
     , @NamedQuery(name = "Ventas.findByImpuesto", query = "SELECT v FROM Ventas v WHERE v.impuesto = :impuesto")
     , @NamedQuery(name = "Ventas.findByDescripcion", query = "SELECT v FROM Ventas v WHERE v.descripcion = :descripcion")
-    , @NamedQuery(name = "Ventas.findByValorTotal", query = "SELECT v FROM Ventas v WHERE v.valorTotal = :valorTotal")
     , @NamedQuery(name = "Ventas.findByFecha", query = "SELECT v FROM Ventas v WHERE v.fecha = :fecha")})
 public class Ventas implements Serializable {
 
@@ -47,6 +50,8 @@ public class Ventas implements Serializable {
     @Column(name = "idVentas")
     private Integer idVentas;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "valorTotal")
+    private Double valorTotal;
     @Column(name = "iva")
     private Double iva;
     @Column(name = "impuesto")
@@ -54,13 +59,13 @@ public class Ventas implements Serializable {
     @Size(max = 255)
     @Column(name = "descripcion")
     private String descripcion;
-    @Column(name = "valorTotal")
-    private Long valorTotal;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    @OneToMany(mappedBy = "idVentas")
+    private List<Factura> facturaList;
     @JoinColumn(name = "idColaborador", referencedColumnName = "idUsuario")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Colaborador idColaborador;
 
     public Ventas() {
@@ -76,6 +81,14 @@ public class Ventas implements Serializable {
 
     public void setIdVentas(Integer idVentas) {
         this.idVentas = idVentas;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     public Double getIva() {
@@ -102,20 +115,21 @@ public class Ventas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Long getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(Long valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
     public Date getFecha() {
         return fecha;
     }
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    @XmlTransient
+    public List<Factura> getFacturaList() {
+        return facturaList;
+    }
+
+    public void setFacturaList(List<Factura> facturaList) {
+        this.facturaList = facturaList;
     }
 
     public Colaborador getIdColaborador() {
