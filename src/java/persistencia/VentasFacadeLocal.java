@@ -28,7 +28,7 @@ public interface VentasFacadeLocal {
 
     Ventas traerCodigo();
     
-    int totalRegistros();
+    Long totalRegistros();
 
     List<Ventas> findAll();
 

@@ -25,5 +25,7 @@ public interface VentasLogicaLocal {
     
     public Ventas traerVenta(Integer numVenta);
     
+    public Long totalRegistros();
+    
     public Ventas traerCodVenta();
 }

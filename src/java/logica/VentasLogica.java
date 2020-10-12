@@ -44,12 +44,11 @@ public class VentasLogica implements VentasLogicaLocal {
     public void modificarVenta(Ventas ve) throws Exception {
 
         Ventas objVentas = ventasDao.traerCodigo();
-        
-        if(objVentas.getValorTotal() != null){
-            throw  new Exception("Debe crear una nueva venta.");
+
+        if (objVentas.getValorTotal() != null) {
+            throw new Exception("Debe crear una nueva venta.");
         }
-      
-      
+
         ventasDao.edit(ve);
     }
 
@@ -70,10 +69,23 @@ public class VentasLogica implements VentasLogicaLocal {
     public Ventas traerCodVenta() {
 
         Ventas objVentas = ventasDao.traerCodigo();
-        
+
 
         return objVentas;
     }
 
+    @Override
+    public Long totalRegistros() {
+        
+        Long idVentaInicial = ventasDao.totalRegistros();
+        Long idVentaFinal = null;
+        
+        if(idVentaInicial <=0){
+            
+           idVentaFinal = Long.valueOf("1");
+        }
+        
+        return idVentaFinal; 
+    }
 
 }

@@ -71,6 +71,7 @@ public class FacturaVista implements Serializable {
     private String ItemProducto;
     Ventas nuevaVenta = new Ventas();
     Date fechaActual = new Date();
+    
 
     public List<Factura> getListaFactura() {
         listaFactura = facturaLogica.consultaFactura();
@@ -222,9 +223,9 @@ public class FacturaVista implements Serializable {
             Productos objValorVenta = productosLogica.valorProducto(objProducto);
 
             Ventas objIdVentas = ventasLogica.traerCodVenta();
-            regisVenta.setValue(objIdVentas.getIdVentas());
-
-            Ventas objVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
+//            regisVenta.setValue(objIdVentas.getIdVentas());
+//
+//            Ventas objVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
 
             nuevaFactura.setIdVentas(objIdVentas);
             
@@ -244,7 +245,7 @@ public class FacturaVista implements Serializable {
 
             ItemProducto = cmbProducto.getValue().toString();
 
-            regisVenta.setValue(objVenta.getIdVentas());
+//            regisVenta.setValue(objVenta.getIdVentas());
 
 //            System.out.println(netoPagar);
 //            DetalleFacturaPK objPk = new DetalleFacturaPK();
@@ -307,5 +308,6 @@ public class FacturaVista implements Serializable {
     }
     public FacturaVista() {
     }
+  
 
 }

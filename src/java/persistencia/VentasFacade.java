@@ -57,15 +57,15 @@ public class VentasFacade extends AbstractFacade<Ventas> implements VentasFacade
     }
 
     @Override
-    public int totalRegistros() {
-        String consulta = "SELECT COUNT(*) FROM Ventas";
+    public Long totalRegistros() {
+        String consulta = "SELECT COUNT(v) FROM Ventas v";
 
         try {
             Query query = em.createQuery(consulta);
-            return (int) query.getSingleResult();
+            return (Long) query.getSingleResult();
             
         } catch (NoResultException nre) {
-            return 0;
+            return null;
         }
     }
 }

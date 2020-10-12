@@ -55,6 +55,7 @@ public class ColaboradorVista implements Serializable {
     private InputText txtDireccion;
     private InputText txtCargo;
     private InputText usuario;
+    private InputText regisVenta;
     private Password clave;
     private CommandButton ingresar;
     private CommandButton btnRegistrar;
@@ -63,6 +64,7 @@ public class ColaboradorVista implements Serializable {
     Ventas nuevaVenta = new Ventas();
     private Colaborador selectColaborador;
     private Colaborador usuarioLogueado;
+    
 
     public List<Colaborador> getListaColaboradores() {
 
@@ -315,6 +317,16 @@ public class ColaboradorVista implements Serializable {
         this.ingresar = ingresar;
     }
 
+    public Colaborador getUsuarioLogueado() {
+        return usuarioLogueado;
+    }
+
+    public void setUsuarioLogueado(Colaborador usuarioLogueado) {
+        this.usuarioLogueado = usuarioLogueado;
+    }
+    
+  
+
     public void ingresarUser() {
 
         try {
@@ -337,16 +349,16 @@ public class ColaboradorVista implements Serializable {
                         .redirect("admin/principal.xhtml");
 
             }
-
+            
             txtUserLogueado = usuarioLogueado.getNombre() + " " + usuarioLogueado.getApellido();
-
+          
             if (usuarioLogueado.getCargo().equals("colaborador")) {
 
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("colaborador/principal.xhtml");
                 System.out.println("Nombre Usuario " + usuarioLogueado.getNombre() + usuarioLogueado.getApellido());
             }
-
+        
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje",
@@ -357,11 +369,34 @@ public class ColaboradorVista implements Serializable {
 
     }
 
-    public void registrarVenta() {
+    public InputText getRegisVenta() {
+        return regisVenta;
+    }
+
+    public void setRegisVenta(InputText regisVenta) {
+        this.regisVenta = regisVenta;
+    }
+
+    public Long registrarVenta() {
 
         try {
            
             nuevaVenta.setIdColaborador(usuarioLogueado);
+            Ventas objIdVentas = ventasLogica.traerCodVenta();
+            
+            Long idVentasPrin = ventasLogica.totalRegistros();
+            
+            if(objIdVentas == null){
+                
+                nuevaVenta.setIdVentas(Integer.parseInt(idVentasPrin.toString()));
+                regisVenta.setValue(nuevaVenta.getIdVentas());
+            }else{
+                
+                regisVenta.setValue(objIdVentas.getIdVentas());
+                nuevaVenta.setIdVentas(Integer.parseInt(regisVenta.getValue().toString()));
+            }
+            
+            
 
             ventasLogica.registrarVenta(nuevaVenta);
 
@@ -373,6 +408,8 @@ public class ColaboradorVista implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "La venta ya se encuentra registrado", //Muestra mensaje de error al usuario.
                             ex.getMessage()));
         }
+        
+        return Long.parseLong(regisVenta.getValue().toString());
     }
 
     public void cerrarSesion() {

@@ -67,7 +67,7 @@ and open the template in the editor.
                             <p:inputText id="txtCantidad" binding="#{facturaVista.txtCantidad}"/>
 
                             <h:outputText value="Ventas "/>
-                            <p:inputText id="ventas" disabled="true" binding="#{facturaVista.regisVenta}"/>
+                            <p:inputText id="ventas" disabled="true" binding="#{colaboradorVista.regisVenta}"/>
 
 
 
@@ -82,19 +82,19 @@ and open the template in the editor.
 
                         <p:dataTable var="factura" value="#{facturaVista.listaFactura}">
                             <p:column headerText="ITEM PRODUCTO">
-                                <h:outputText value="#{facturaVista.itemProducto}" />
+                                <h:outputText value="#{factura.idProductos.idProductos}" />
                             </p:column>
 
                             <p:column headerText="DESCRIPCIÓN">
-                                <h:outputText value="#{facturaVista.netoPagar}" />
+                                <h:outputText value="#{factura.idProductos.nombreProducto}" />
                             </p:column>
 
                             <p:column headerText="CANTIDAD">
-                                <h:outputText value="#{facturaVista.txtFechaVenta}" />
+                                <h:outputText value="#{factura.cantidadP}" />
                             </p:column>
 
                             <p:column headerText="VALOR TOTAL">
-                                <h:outputText value="#{facturaVista.txtCantidad}" />
+                                <h:outputText value="#{factura.valorTotalFactura}" />
                             </p:column>
                         </p:dataTable>
 
@@ -118,10 +118,10 @@ and open the template in the editor.
 
                     <h:form id="formularioFactura2">
                         <p:growl  id="mensaje2" showDetail="true"/>
-                        <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40" >
+                        <p:dialog header="Obtener Factura" widgetVar="dlg1" minHeight="40" >
                          
-                            <p:commandButton value="Desea facturar ?" update=":formularioFactura2" >
-                                <p:confirm header="Confirmation" message="Desea facturar ?" icon="pi pi-exclamation-triangle" />
+                            <p:commandButton value="Imprimir" update=":formularioFactura2" >
+                                <p:confirm header="Confirmación" message="¿Está Seguro(a)?" icon="pi pi-exclamation-triangle" />
                             </p:commandButton>
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" onclick="location.reload(true)" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
