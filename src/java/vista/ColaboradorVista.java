@@ -64,7 +64,7 @@ public class ColaboradorVista implements Serializable {
     Ventas nuevaVenta = new Ventas();
     private Colaborador selectColaborador;
     private Colaborador usuarioLogueado;
-    
+    FacesContext fc;
 
     public List<Colaborador> getListaColaboradores() {
 
@@ -324,8 +324,14 @@ public class ColaboradorVista implements Serializable {
     public void setUsuarioLogueado(Colaborador usuarioLogueado) {
         this.usuarioLogueado = usuarioLogueado;
     }
-    
-  
+
+    public FacesContext getFc() {
+        return fc;
+    }
+
+    public void setFc(FacesContext fc) {
+        this.fc = fc;
+    }
 
     public void ingresarUser() {
 
@@ -338,27 +344,42 @@ public class ColaboradorVista implements Serializable {
             nuevoUsuario.setClaveUser(clave.getValue().toString());
 
             usuarioLogueado = colaboradorLogica.ingresar(nuevoUsuario);
-            
-            // Guardo al usuario en la sesión.
-            FacesContext.getCurrentInstance().getExternalContext()
-                    .getSessionMap().put("usuario", usuarioLogueado);
 
-            if (usuarioLogueado.getCargo().equals("administrador")) {
+            // Guardo al usuario en la sesión.
+            while(usuarioLogueado.getCargo().equals("administrador")) {
                 //Redirecciono a la página.
+                fc = FacesContext.getCurrentInstance();
+                fc.getExternalContext().getSessionMap().put("usuario", usuarioLogueado);
+                
                 FacesContext.getCurrentInstance().getExternalContext()
                         .redirect("admin/principal.xhtml");
-
-            }
+                txtUserLogueado = usuarioLogueado.getNombre() + " " + usuarioLogueado.getApellido();
+                
+                FacesContext.getCurrentInstance().getExternalContext().
+                    getSessionMap().remove("usuario2");
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("../index.xhtml");
             
-            txtUserLogueado = usuarioLogueado.getNombre() + " " + usuarioLogueado.getApellido();
-          
-            if (usuarioLogueado.getCargo().equals("colaborador")) {
-
-                FacesContext.getCurrentInstance().getExternalContext()
-                        .redirect("colaborador/principal.xhtml");
-                System.out.println("Nombre Usuario " + usuarioLogueado.getNombre() + usuarioLogueado.getApellido());
+                break;
             }
-        
+
+            while(usuarioLogueado.getCargo().equals("colaborador")) {
+                fc = FacesContext.getCurrentInstance();
+                fc.getExternalContext().getSessionMap().put("usuario2", usuarioLogueado);
+                
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .redirect("colaborador/principalC.xhtml");
+                
+                txtUserLogueado = usuarioLogueado.getNombre() + " " + usuarioLogueado.getApellido();
+                
+                FacesContext.getCurrentInstance().getExternalContext().
+                    getSessionMap().remove("usuario");
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("../index.xhtml");
+            
+                break;
+            }
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Mensaje",
@@ -377,26 +398,24 @@ public class ColaboradorVista implements Serializable {
         this.regisVenta = regisVenta;
     }
 
-    public Long registrarVenta() {
+    public void registrarVenta() {
 
         try {
-           
+
             nuevaVenta.setIdColaborador(usuarioLogueado);
             Ventas objIdVentas = ventasLogica.traerCodVenta();
-            
+
             Long idVentasPrin = ventasLogica.totalRegistros();
-            
-            if(objIdVentas == null){
-                
+
+            if (objIdVentas == null) {
+
                 nuevaVenta.setIdVentas(Integer.parseInt(idVentasPrin.toString()));
                 regisVenta.setValue(nuevaVenta.getIdVentas());
-            }else{
-                
+            } else {
+
                 regisVenta.setValue(objIdVentas.getIdVentas());
                 nuevaVenta.setIdVentas(Integer.parseInt(regisVenta.getValue().toString()));
             }
-            
-            
 
             ventasLogica.registrarVenta(nuevaVenta);
 
@@ -408,15 +427,18 @@ public class ColaboradorVista implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "La venta ya se encuentra registrado", //Muestra mensaje de error al usuario.
                             ex.getMessage()));
         }
-        
-        return Long.parseLong(regisVenta.getValue().toString());
+
     }
 
     public void cerrarSesion() {
         try {
-            FacesContext.getCurrentInstance().getExternalContext()
-                    .
+            FacesContext.getCurrentInstance().getExternalContext().
                     getSessionMap().remove("usuario");
+            FacesContext.getCurrentInstance().getExternalContext()
+                    .redirect("../index.xhtml");
+            
+            FacesContext.getCurrentInstance().getExternalContext().
+                    getSessionMap().remove("usuario2");
             FacesContext.getCurrentInstance().getExternalContext()
                     .redirect("../index.xhtml");
         } catch (IOException ex) {

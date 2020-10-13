@@ -71,8 +71,7 @@ public class FacturaVista implements Serializable {
     private String ItemProducto;
     Ventas nuevaVenta = new Ventas();
     Date fechaActual = new Date();
-    
-
+    ColaboradorVista micolaborador;
     public List<Factura> getListaFactura() {
         listaFactura = facturaLogica.consultaFactura();
         return listaFactura;
@@ -211,7 +210,6 @@ public class FacturaVista implements Serializable {
         this.ItemProducto = ItemProducto;
     }
 
-  
     public void registrarFactura() {
 
         try {
@@ -228,7 +226,7 @@ public class FacturaVista implements Serializable {
 //            Ventas objVenta = ventasLogica.traerVenta(Integer.parseInt(regisVenta.getValue().toString()));
 
             nuevaFactura.setIdVentas(objIdVentas);
-            
+
             nuevaFactura.setIdProductos(objProducto);
 
             nuevaFactura.setCantidadP(Integer.parseInt(txtCantidad.getValue().toString()));
@@ -246,7 +244,6 @@ public class FacturaVista implements Serializable {
             ItemProducto = cmbProducto.getValue().toString();
 
 //            regisVenta.setValue(objVenta.getIdVentas());
-
 //            System.out.println(netoPagar);
 //            DetalleFacturaPK objPk = new DetalleFacturaPK();
 //            objPk.setCodProducto(objProducto.getIdProductos());
@@ -254,7 +251,7 @@ public class FacturaVista implements Serializable {
 //
 //            nuevaFactura.setDetalleFacturaPK(objPk);
             facturaLogica.registrarItem(nuevaFactura);
-            
+
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
                             "Producto Guardado.")); // Muestra mensaje de información al usario.
@@ -274,21 +271,20 @@ public class FacturaVista implements Serializable {
         txtCantidad.setValue(selectFactura.getCantidadP());
         regisVenta.setValue(selectVentas.getIdVentas());
     }
-    
 
     public void totalVenta() {
 
         try {
             Ventas traerVenta = ventasLogica.traerCodVenta();
 
-            traerVenta.setFecha(fechaActual);      
-            
+            traerVenta.setFecha(fechaActual);
+
             Long ventaTotal = (netoPagar).longValue();
-            
+
             totalNeto.setValue(ventaTotal);
-            
+
             traerVenta.setValorTotal(Double.valueOf(totalNeto.getValue().toString()));
-           
+
             ventasLogica.modificarVenta(traerVenta);
 
             FacesContext.getCurrentInstance().addMessage(null,
@@ -301,13 +297,16 @@ public class FacturaVista implements Serializable {
                             ex.getMessage()));
         }
     }
-    public void mostrarVentaTotal(){
+
+    public void mostrarVentaTotal() {
         FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
-                            "El total de la venta es " + netoPagar));
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
+                        "El total de la venta es " + netoPagar));
     }
+
+
     public FacturaVista() {
     }
-  
 
+   
 }
