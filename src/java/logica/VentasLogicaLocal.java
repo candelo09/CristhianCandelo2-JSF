@@ -28,4 +28,6 @@ public interface VentasLogicaLocal {
     public Long totalRegistros();
     
     public Ventas traerCodVenta();
+    
+    public int estadoFactura();
 }

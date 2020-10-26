@@ -19,6 +19,7 @@
         <style>
             body{
                 background: rgba(179,220,237,0.31);
+                background-image: url("../imagenes/LogoEmpresaCLFondo.png");
             }
 
             .menu {
@@ -49,9 +50,25 @@
                 padding: 0.1% 0.2% 0.4% 0.1%;
             }
 
+            .nav-link2 {
+                color:#D4E0E4;
+                text-decoration: none;
+                display: block;
+                font-size: 12px;
+                font-weight: bold;
+                padding: 0.3% 0.2% 0.4% 0.1%;
+                margin-right:200px;
+            }
+
             .salir .boton{
-                color: grey;
-                border-radius: 20% !important;
+                color: white;
+                border-radius: 22% !important;
+                margin-top: -6px;
+                background-color: #456E87;
+                text-decoration: none !important;
+                font-weight: 500;
+                font-size: 14px;
+                width: 69px;
             }
 
             a.nav-link {
@@ -62,25 +79,23 @@
 
         <h:body>
 
-
-
-
             <header>
                 <div class="menu">
                     <div class="contenedor" id="contenedor-menu">
                         <nav class="nav-menu">
                             <ul class="nav justify-content-end">
-                                <li class="nav-link">
-                                <h:outputText value="Bienvenid@ " />
+                                <li class="nav-link2">
+                                <h:outputText class="nomb" value="USUARIO: " />
                                 <h:outputText value="#{colaboradorVista.txtUserLogueado}"  />
                                 </li>
                                 <li class="nav-link"><a class="nav-link" href="paginaProductos.xhtml">Productos</a></li>
                                 <li class="nav-link"><a class="nav-link" href="paginaProveedores.xhtml">Proveedores</a></li>
-                                <li class="nav-link"><a class="nav-link" href="paginaFactura.xhtml">Facturaración</a></li>
-                                <li class="nav-link">   
-                                <h:form class="salir"> 
+                                <li class="nav-link"><a class="nav-link" href="paginaFactura.xhtml">Facturación</a></li>
+                                
+                                <li class="nav-link">   <h:form class="salir"> 
                                     <p:commandButton class="boton" value="SALIR" id="cerrar" 
                                                      action="#{colaboradorVista.cerrarSesion()}"/>
+
                                 </h:form>
                                 </li>
                             </ul>
@@ -89,8 +104,8 @@
                 </div>
             </header>
 
+
         </h:body>
 
     </f:view>
 </html>
-

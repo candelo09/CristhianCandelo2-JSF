@@ -88,4 +88,11 @@ public class VentasLogica implements VentasLogicaLocal {
         return idVentaFinal; 
     }
 
+    @Override
+    public int estadoFactura() {
+        
+        
+        return 1;
+    }
+
 }

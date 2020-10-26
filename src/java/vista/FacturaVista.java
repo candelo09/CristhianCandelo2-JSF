@@ -278,6 +278,8 @@ public class FacturaVista implements Serializable {
             Ventas traerVenta = ventasLogica.traerCodVenta();
 
             traerVenta.setFecha(fechaActual);
+            
+            ventasLogica.estadoFactura();
 
             Long ventaTotal = (netoPagar).longValue();
 
@@ -290,7 +292,7 @@ public class FacturaVista implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje",
                             "El total de la venta es " + netoPagar)); // Muestra mensaje de información al usario.
-
+            System.out.println(ventasLogica.estadoFactura());
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "La factura no ha sido creada.", //Muestra mensaje de error al usuario.
